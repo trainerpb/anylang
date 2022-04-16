@@ -14,6 +14,8 @@ import anylang.scriptrunner.factory.ScriptRunnerFactory;
 import anylang.scriptrunner.factory.impl.JavaScriptRunner;
 import anylang.scriptrunner.factory.impl.PythonScriptRunner;
 import anylang.scriptrunner.models.AbstractTextScript;
+import lombok.Builder;
+import lombok.Data;
 
 public class MainClass_Example {
 
@@ -71,21 +73,12 @@ public class MainClass_Example {
 		System.out.println(result);
 	}
 
+	@Data
+	@Builder
+	public
 	static class Student{
 		private String sex;
-		
-		public String getSex() {
-			return sex;
-		}
-
-		public void setSex(String sex) {
-			this.sex = sex;
-		}
-
-		public Student(String sex) {
-			
-			this.sex = sex;
-		}
+		// Other fields ...
 		
 	}
 }

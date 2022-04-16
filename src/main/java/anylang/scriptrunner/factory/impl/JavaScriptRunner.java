@@ -2,37 +2,35 @@ package anylang.scriptrunner.factory.impl;
 
 import java.io.Reader;
 import java.util.function.Function;
-
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
 import anylang.scriptrunner.ScriptRunner;
 import anylang.scriptrunner.exceptions.ScriptFailureException;
 import anylang.scriptrunner.models.AbstractTextScript;
-import anylang.scriptrunner.models.JavaScript;
 import anylang.scriptrunner.models.Script;
 
 public class JavaScriptRunner implements ScriptRunner {
+	/**
+	 * Note: Support for NASHORN is deprecated in JDK 11 and removed in later
+	 * version. For versions that are not going to support NASHORN, we shall use a
+	 * suitable scripting engine as need arises.
+	 */
 	public static final String NASHORN = "Nashorn";
 	private static ScriptEngine scriptEngine = null;
-	
-	 
-	
-	
+
 	@Override
 	public Object execute(Script script, Object... arguments) throws ScriptFailureException {
-		AbstractTextScript javaScript=(AbstractTextScript)script;
-		Invocable scriptInvocable=loadScript(javaScript.getScriptContent());
+		AbstractTextScript javaScript = (AbstractTextScript) script;
+		Invocable scriptInvocable = loadScript(javaScript.getScriptContent());
 		try {
 			return scriptInvocable.invokeFunction(script.getScriptName(), arguments);
 		} catch (NoSuchMethodException | ScriptException e) {
-			
+
 			throw new ScriptFailureException(e);
 		}
 	}
-
 
 	public JavaScriptRunner() {
 		super();
@@ -41,15 +39,11 @@ public class JavaScriptRunner implements ScriptRunner {
 		}
 	}
 
-	
 	/**
 	 * @param reader
 	 * @return {@link Invocable}
-	 * @throws ScriptException 
-	 * Apr 15, 2022 
-	 * ScriptUtils.java 
-	 * Invocable
-	 * Try to Load script from a {@link Reader }.
+	 * @throws ScriptException Apr 15, 2022 ScriptUtils.java Invocable Try to Load
+	 *                         script from a {@link Reader }.
 	 */
 	public Invocable loadScript(String scriptCode) throws ScriptFailureException {
 		try {
@@ -58,7 +52,7 @@ public class JavaScriptRunner implements ScriptRunner {
 
 			return invocable;
 		} catch (ScriptException e) {
-			throw new ScriptFailureException("Failed to load script ",e);
+			throw new ScriptFailureException("Failed to load script ", e);
 		}
 
 	}
@@ -66,8 +60,7 @@ public class JavaScriptRunner implements ScriptRunner {
 	/**
 	 * @param functionName
 	 * @return if a function exists in JavaScript code listing
-	 * @throws ScriptException 
-	 * Apr 15, 2022 
+	 * @throws ScriptException Apr 15, 2022
 	 * 
 	 */
 	public boolean isFunction(String functionName) throws ScriptException {
@@ -75,12 +68,11 @@ public class JavaScriptRunner implements ScriptRunner {
 		return (Boolean) this.scriptEngine.eval(test);
 	}
 
-	public  <T> Object pojoAsJsObject(T pojo,Function<? super T, String> jsonSerializer) throws ScriptException {
-		String strJson=jsonSerializer.apply(pojo);
+	public <T> Object pojoAsJsObject(T pojo, Function<? super T, String> jsonSerializer) throws ScriptException {
+		String strJson = jsonSerializer.apply(pojo);
 		String input = String.format("JSON.parse('%s')", strJson);
-		
-		return  scriptEngine.eval(input);
+
+		return scriptEngine.eval(input);
 	}
 
-	
 }

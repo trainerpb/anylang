@@ -3,6 +3,7 @@ package anylang.scriptrunner.factory;
 import anylang.scriptrunner.ScriptRunner;
 import anylang.scriptrunner.ScriptType;
 import anylang.scriptrunner.exceptions.UnsupportedScriptTypeException;
+import anylang.scriptrunner.factory.impl.JavaSEScriptRunner;
 import anylang.scriptrunner.factory.impl.JavaScriptRunner;
 import anylang.scriptrunner.factory.impl.PythonScriptRunner;
 
@@ -15,16 +16,16 @@ public class ScriptRunnerFactory {
 		case PYTHON:
 			return new PythonScriptRunner();
 		case JAVA:
+			return new JavaSEScriptRunner();
 		case NODE:
-			
+			throw new UnsupportedScriptTypeException(scriptType.name() + " is not suppored");
 		
-			
-		case SCALA:
+		case SCALA: // We are on it already to provide support for Scala
 			throw new UnsupportedScriptTypeException(scriptType.name() + " is not suppored");
 		default:
-			break;
+			throw new UnsupportedScriptTypeException(scriptType.name() + " is not suppored");
 		}
-		throw new UnsupportedScriptTypeException(scriptType.name() + " is not suppored");
+		
 
 	}
 }

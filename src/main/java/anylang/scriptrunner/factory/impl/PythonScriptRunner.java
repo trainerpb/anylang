@@ -28,7 +28,9 @@ public class PythonScriptRunner implements ScriptRunner {
 	}
 
 	private String buildPythonFunctionCallSyntax(AbstractTextScript pythonScript,Object...objects ) {
-		String arguments=Stream.of(objects).map(String::valueOf).collect(Collectors.joining(",","(",")"));
+		String arguments=Stream.of(objects).map(s->{
+												return (s instanceof Number)?String.valueOf(s):String.valueOf(String.format("\"%s\"",s));
+											}).collect(Collectors.joining(",","(",")"));
 		return String.format("%s%s", pythonScript.getScriptName(),arguments);
 	}
 

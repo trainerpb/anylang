@@ -21,7 +21,7 @@ public class FileScriptLoader implements ScriptLoader {
 		String content = null;
 		
 		content = Files.lines(sourceFile.toPath()).collect(Collectors.joining(System.lineSeparator()));
-		return new AbstractTextScript().builder().scriptContent(content).build();
+		return  AbstractTextScript.builder().scriptContent(content).build();
 		
 	}
 
